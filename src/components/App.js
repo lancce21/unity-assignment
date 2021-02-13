@@ -6,6 +6,8 @@ import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
 
+import DiffTable from './DiffTable';
+
 const fetchData = () => {
   return api.getUsersDiff();
 };
@@ -46,10 +48,12 @@ export const App = () => {
   return (
     <Container className="app" fixed>
       <Box data-testid="app-box" m={2}>
-        <Typography>Your app should show up here.</Typography>
+        <Typography>App should appear here</Typography>
+        <DiffTable />
         {
           button
         }
+        
       </Box>
     </Container>
   );
