@@ -12,11 +12,14 @@ const fetchData = () => {
 
 export const App = () => {
 
-  const [loadingState, setLoadingState] = useState('default');
+  const [loadingState, setLoadingState] = useState('loading');
+  const [data, setData] = useState(null);
 
+  // Hook for handling loading states
   useEffect(() => {
     if(loadingState === "loading"){
       fetchData().then(data =>{
+        setData(data);
         setLoadingState("default");
       }).catch(error =>{
         setLoadingState("error");
@@ -25,7 +28,10 @@ export const App = () => {
     // return () => {
     //   cleanup
     // }
-  }, [loadingState])
+  },[loadingState]);
+
+
+  
 
   const buttonText = loadingState === "error" ? "Retry" : "Load more";
 
@@ -33,6 +39,9 @@ export const App = () => {
     loadingState === "loading" 
       ?  <CircularProgress />
       : <Button  variant="contained" color="primary" onClick={()=>setLoadingState('loading')}>{buttonText}</Button>;
+
+
+  console.log("data",data);
 
   return (
     <Container className="app" fixed>
