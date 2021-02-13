@@ -1,5 +1,6 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
+import moment from 'moment';
 import Paper from '@material-ui/core/Paper';
 import TableContainer from '@material-ui/core/TableContainer';
 import Table from '@material-ui/core/Table';
@@ -12,9 +13,9 @@ const useStyles = makeStyles({
     },
 });
 
-const renderEmptyBodyRow = ()=>{
+const renderEmptyBodyRow = (rowId)=>{
 
-    return (<TableRow>
+    return (<TableRow key={rowId}>
         <TableCell></TableCell>
         <TableCell></TableCell>
         <TableCell></TableCell>
@@ -22,19 +23,35 @@ const renderEmptyBodyRow = ()=>{
     </TableRow>);
 };
 
+const renderDiffRow = (rowData, idx) =>{
+    const {id, timestamp, diff} = rowData;
+
+    console.log(diff);
+
+    const date = moment(timestamp).format("YYYY-MM-DD");
+
+
+    const {newValue, oldValue} = diff[0];
+
+    return (
+        <TableRow key={idx}>
+            <TableCell>{date}</TableCell>
+            <TableCell>{id}</TableCell>
+            <TableCell>{newValue}</TableCell>
+            <TableCell>{oldValue}</TableCell>
+        </TableRow>
+    );
+};
+
 const renderRows = (data)=>{
     // let's provide at least 3 rows regardless of how much data there is
-    const minRows = 3;
     const rowCount = data?.length;
-    let rows;
+    let rows = rowCount ? data : [];
 
-    if(!rowCount || rowCount < 3){
-        rows = new Array(minRows);    
-    }
 
-    return rows.map(row=>{
-        return renderEmptyBodyRow();
-    });
+    return rows ? rows.map((row, idx)=>{
+        return renderDiffRow(row, idx);
+    }) : [];
 };
 
 const DiffTable = (props) =>{
@@ -56,7 +73,7 @@ const DiffTable = (props) =>{
                 </TableHead>
                 <TableBody>
                     {
-                        renderEmptyBodyRow()
+                        renderRows(data)
                     }
                 </TableBody>
             </Table>
