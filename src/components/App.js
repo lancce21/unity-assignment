@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
+import Alert from '@material-ui/lab/Alert';
 
 import DiffTable from './DiffTable';
 
@@ -16,6 +17,7 @@ export const App = () => {
 
   const [loadingState, setLoadingState] = useState('loading');
   const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
 
   // Hook for handling loading states
   useEffect(() => {
@@ -25,6 +27,8 @@ export const App = () => {
         setData(tableData);
         setLoadingState("default");
       }).catch(error =>{
+        const {error: errorText} = error;
+        setError(errorText);
         setLoadingState("error");
       });
     }
@@ -34,6 +38,8 @@ export const App = () => {
   },[loadingState]);
 
   const buttonText = loadingState === "error" ? "Retry" : "Load more";
+
+  const errorAlert = loadingState === "error" && error ? <Alert severity="error">{error}</Alert> : null;
 
   const button = 
     loadingState === "loading" 
@@ -45,6 +51,9 @@ export const App = () => {
       <Box data-testid="app-box" m={2}>
         <Typography>App should appear here</Typography>
         <DiffTable data={data}/>
+        {
+          errorAlert
+        }
         {
           button
         }

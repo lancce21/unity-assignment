@@ -51,7 +51,7 @@ const renderRows = (data)=>{
 
     return rows ? rows.map((row, idx)=>{
         return renderDiffRow(row, idx);
-    }) : [];
+    }) : renderEmptyBodyRow(1);
 };
 
 const DiffTable = (props) =>{
