@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import api from '../lib/api';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -10,16 +10,22 @@ const fetchData = () => {
   return api.getUsersDiff();
 };
 
-const renderTableFooter = (loadingState = "default", onClickCallback) => {
-  if(loadingState === "default"){
-    return 
-  }
-}
-
-
 export const App = () => {
 
   const [loadingState, setLoadingState] = useState('default');
+
+  useEffect(() => {
+    if(loadingState === "loading"){
+      fetchData().then(data =>{
+        setLoadingState("default");
+      }).catch(error =>{
+        setLoadingState("error");
+      });
+    }
+    // return () => {
+    //   cleanup
+    // }
+  }, [loadingState])
 
   const buttonText = loadingState === "error" ? "Retry" : "Load more";
 
