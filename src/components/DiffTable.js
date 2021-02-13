@@ -12,8 +12,36 @@ const useStyles = makeStyles({
     },
 });
 
-const DiffTable = () =>{
+const renderEmptyBodyRow = ()=>{
+
+    return (<TableRow>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
+    </TableRow>);
+};
+
+const renderRows = (data)=>{
+    // let's provide at least 3 rows regardless of how much data there is
+    const minRows = 3;
+    const rowCount = data?.length;
+    let rows;
+
+    if(!rowCount || rowCount < 3){
+        rows = new Array(minRows);    
+    }
+
+    return rows.map(row=>{
+        return renderEmptyBodyRow();
+    });
+};
+
+const DiffTable = (props) =>{
     const classes = useStyles();
+    const {data} = props;
+
+    console.log(data);
 
     return (
         <TableContainer data-testid="diff-table" component={Paper}>
@@ -27,7 +55,9 @@ const DiffTable = () =>{
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    
+                    {
+                        renderEmptyBodyRow()
+                    }
                 </TableBody>
             </Table>
 

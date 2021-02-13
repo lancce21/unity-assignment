@@ -4,9 +4,10 @@ import DiffTable from './DiffTable';
 
 describe('<DiffTable />', () => {
   let wrapper;
+  let data;
 
   beforeEach(() => {
-    wrapper = shallow(<DiffTable />);
+    wrapper = shallow(<DiffTable data={data} />);
   });
 
   describe('render()', () => {
