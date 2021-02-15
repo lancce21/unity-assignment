@@ -29,7 +29,7 @@ const renderDiffRow = (rowData, idx) =>{
         <TableRow data-testid="diff-table-row" key={idx}>
             <TableCell>{date}</TableCell>
             <TableCell>{id}</TableCell>
-            <TableCell>{newValue}</TableCell>
+            <TableCell data-testid="new-value">{newValue}</TableCell>
             <TableCell>{oldValue}</TableCell>
         </TableRow>
     );
@@ -66,7 +66,7 @@ const DiffTable = (props) =>{
                         <TableCell onClick={onSort}>Date&nbsp;{sortIcon}</TableCell>
                         <TableCell>User ID</TableCell>
                         <TableCell>Old value</TableCell>
-                        <TableCell>New value</TableCell>
+                        <TableCell >New value</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

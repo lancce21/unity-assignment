@@ -3,43 +3,49 @@ import { shallow } from 'enzyme';
 import DiffTable from './DiffTable';
 
 describe('<DiffTable />', () => {
-  let wrapper, wrapper2, wrapper3;
-  let data = [];
+  let wrapper;
+ 
   const legitData = [
     {
       id: "e28d290a-a2f2-48c2-9001-ff43884e271b",
-      timestamp: 1581631200000,
+      timestamp: 0,
       diff:[{
         field: "name",
-        newValue: "Bruce",
-        oldValue: "John"
+        newValue: "Oldest",
+        oldValue: "Ever"
       }]
     },
     {
       id: "asdfdasdf-a2f2-48c2-9001-ff43884e271b",
-      timestamp: 1581631200123,
+      timestamp: 1581991200123,
       diff:[{
         field: "name",
-        newValue: "Dave",
-        oldValue: "Davidson"
+        newValue: "Newest",
+        oldValue: "Now"
+      }]
+    },
+    {
+      id: "qwer-twer-awse-wer1-ff43884e271b",
+      timestamp: 1200123,
+      diff:[{
+        field: "name",
+        newValue: "Second Oldest",
+        oldValue: "Mini Pappa"
+      }]
+    },
+    {
+      id: "asdfdasdf-a2f2-48c2-9001-ff43884e271b",
+      timestamp: 791200123,
+      diff:[{
+        field: "name",
+        newValue: "Almost New",
+        oldValue: "Baby"
       }]
     }
   ];
-  const illegitimateData = [
-    {
-      iddqd: "idkfa",
-      timeToKill: 0,
-      doomed: true
-    }
-  ]
-
-
-  
 
   beforeEach(() => {
-    wrapper = shallow(<DiffTable data={data} />);
-    wrapper2 = shallow(<DiffTable data={legitData} />);
-    wrapper3 = shallow(<DiffTable data={illegitimateData} />);
+    wrapper = shallow(<DiffTable data={legitData} sortDesc={false} />);
   });
 
   describe('render()', () => {
@@ -47,22 +53,31 @@ describe('<DiffTable />', () => {
       expect(wrapper.find({ 'data-testid': 'diff-table' })).toHaveLength(1);
     });
 
-    it('still renders the table with broken data', () =>{
-      expect(wrapper3.find({ 'data-testid':'diff-table' })).toHaveLength(1);
-    });
+
   });
 
   describe('renderRows()', ()=>{
-    it('does not render any rows when data is empty', ()=>{
-      expect(wrapper.find({ 'data-testid': 'diff-table-row' })).toHaveLength(0);
+    it('renders the correct amount of rows when the data is legit', ()=>{
+      const newValues = wrapper.find({ 'data-testid': 'diff-table-row' });
+      expect(newValues).toHaveLength(4);
+      
     });
 
-    it('renders two rows with two legit data items', () =>{
-      expect(wrapper2.find({ 'data-testid':'diff-table-row' })).toHaveLength(2);
+    it('renders sorts the order according to the prop sortDesc (false) given above', ()=>{
+      const items = wrapper.find({'data-testid':"new-value"});
+
+      expect(items).toHaveLength(4);
+      expect(items.first().text()).toBe("Oldest");
+      expect(items.last().text()).toBe("Newest");
     });
 
-    it('does not render any rows when data is corrupt', ()=>{
-      expect(wrapper3.find({ 'data-testid': 'diff-table-row' })).toHaveLength(0);
+    it('renders the order of the items in desc order', ()=>{
+      wrapper = shallow(<DiffTable data={legitData} sortDesc={true} />);
+
+      const items = wrapper.find({'data-testid':'new-value'});
+
+      expect(items.first().text()).toBe("Newest");
+      expect(items.last().text()).toBe("Oldest");
     });
 
   });
