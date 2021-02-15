@@ -8,11 +8,18 @@ import TableHead from '@material-ui/core/TableHead';
 import { TableBody, TableCell, TableRow } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import { lightBlue } from '@material-ui/core/colors';
 
 const useStyles = makeStyles({
     table: {
       minWidth: 650,
     },
+    sortColumn: {
+        cursor: 'pointer',
+        "&:hover":{
+            backgroundColor: lightBlue[50]
+        }
+    }
 });
 
 const renderDiffRow = (rowData, idx) =>{
@@ -63,7 +70,7 @@ const DiffTable = (props) =>{
             <Table className={classes.Table}>
                 <TableHead>
                     <TableRow>
-                        <TableCell onClick={onSort}>Date&nbsp;{sortIcon}</TableCell>
+                        <TableCell className={classes.sortColumn} onClick={onSort}>Date&nbsp;{sortIcon}</TableCell>
                         <TableCell>User ID</TableCell>
                         <TableCell>Old value</TableCell>
                         <TableCell >New value</TableCell>

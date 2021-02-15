@@ -52,8 +52,6 @@ describe('<DiffTable />', () => {
     it('renders the Diff table', () => {
       expect(wrapper.find({ 'data-testid': 'diff-table' })).toHaveLength(1);
     });
-
-
   });
 
   describe('renderRows()', ()=>{
