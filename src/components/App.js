@@ -18,6 +18,7 @@ export const App = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [sortDesc, setSortDesc] = useState(true);
+  const genericError = "We had problems fetching your data. Please try again!";
 
   useEffect(() => {
     setLoadingState('loading');    
@@ -34,7 +35,8 @@ export const App = () => {
 
       }).catch(error =>{
         const {error: errorText} = error;
-        setError(errorText);
+        console.error(errorText);
+        setError(genericError);
         setLoadingState('error');
       });
     }
@@ -49,7 +51,7 @@ export const App = () => {
   const button = 
     loadingState === "loading" 
       ?  <CircularProgress />
-      : <Button  variant="contained" color="primary" onClick={()=>setLoadingState('loading')}>{buttonText}</Button>;
+      : <Button variant="contained" color="primary" onClick={()=>setLoadingState('loading')}>{buttonText}</Button>;
 
   return (
     <Container className="app" fixed>
@@ -58,7 +60,7 @@ export const App = () => {
         {
           errorAlert
         }
-        <Box display="flex" justifyContent="center">{ button }</Box>
+        <Box display="flex" py="0.5em" justifyContent="center">{ button }</Box>
         
       </Box>
     </Container>
