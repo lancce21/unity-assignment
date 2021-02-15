@@ -15,16 +15,6 @@ const useStyles = makeStyles({
     },
 });
 
-const renderEmptyBodyRow = (rowId)=>{
-
-    return (<TableRow key={rowId}>
-        <TableCell></TableCell>
-        <TableCell></TableCell>
-        <TableCell></TableCell>
-        <TableCell></TableCell>
-    </TableRow>);
-};
-
 const renderDiffRow = (rowData, idx) =>{
     const {id, timestamp, diff} = rowData;
 
@@ -46,25 +36,27 @@ const renderDiffRow = (rowData, idx) =>{
 };
 
 const renderRows = (data)=>{
-    // let's provide at least 3 rows regardless of how much data there is
     const rowCount = data?.length;
     let rows = rowCount ? data : [];
 
-
-    return rows ? rows.map((row, idx)=>{
+    return rows.map((row, idx)=>{
         return renderDiffRow(row, idx);
-    }) : renderEmptyBodyRow(1);
+    }) 
 };
 
 const DiffTable = (props) =>{
     const classes = useStyles();
     const {data, sortDesc, onSort} = props;
 
-    console.log(sortDesc );
-
     const sortIcon = sortDesc
             ? <ArrowDropDownIcon fontSize="small" /> 
             : <ArrowDropUpIcon fontSize="small" />;
+
+    const sortedData = data.sort((a, b) =>{
+        if(a.timestamp === b.timestamp) return 0;
+        if(a.timestamp > b.timestamp) return  sortDesc ? -1 : 1;
+        return sortDesc ? 1 : -1;
+    });
 
     return (
         <TableContainer data-testid="diff-table" component={Paper}>
@@ -79,7 +71,7 @@ const DiffTable = (props) =>{
                 </TableHead>
                 <TableBody>
                     {
-                        renderRows(data)
+                        renderRows(sortedData)
                     }
                 </TableBody>
             </Table>

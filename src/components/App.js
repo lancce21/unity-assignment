@@ -12,22 +12,6 @@ const fetchData = () => {
   return api.getUsersDiff();
 };
 
-const compareDataDesc =(a, b) =>{
-  if (!a?.timestamp || !b?.timestamp) return 0;
-  const {timestamp: t1} = a;
-  const {timestamp: t2} = b;
-
-  return t1 > t2 ? -1 : t2 > t1 ? 1 : 0;
-};
-
-const compareDataAsc =(a, b) =>{
-  if (!a?.timestamp || !b?.timestamp) return 0;
-  const {timestamp: t1} = a;
-  const {timestamp: t2} = b;
-
-  return t1 > t2 ? 1 : t2 > t1 ? -1 : 0;
-};
-
 export const App = () => {
 
   const [loadingState, setLoadingState] = useState('default');
@@ -36,17 +20,7 @@ export const App = () => {
   const [sortDesc, setSortDesc] = useState(true);
 
   useEffect(() => {
-    api.getUsersDiff()
-      .then(result =>{
-        const {data} = result;
-        setData(data.sort(compareDataDesc));
-        setLoadingState('default');
-      }).catch(error =>{
-        const {error: errorText} =error;
-        setError(errorText);
-        setLoadingState('error');
-      });
-    
+    setLoadingState('loading');    
   }, []);
 
   useEffect(() => {
@@ -66,11 +40,6 @@ export const App = () => {
     }
     
   }, [loadingState]);
-
-  useEffect(() => {
-    setData(data.sort(sortDesc? compareDataDesc : compareDataAsc))
-
-  }, [sortDesc, data]);
 
 
   const buttonText = loadingState === "error" ? "Retry" : "Load more";
