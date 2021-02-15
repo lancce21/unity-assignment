@@ -26,8 +26,6 @@ const renderEmptyBodyRow = (rowId)=>{
 const renderDiffRow = (rowData, idx) =>{
     const {id, timestamp, diff} = rowData;
 
-    console.log(diff);
-
     const date = moment(timestamp).format("YYYY-MM-DD");
 
 
@@ -57,8 +55,6 @@ const renderRows = (data)=>{
 const DiffTable = (props) =>{
     const classes = useStyles();
     const {data} = props;
-
-    console.log(data);
 
     return (
         <TableContainer data-testid="diff-table" component={Paper}>

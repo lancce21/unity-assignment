@@ -15,27 +15,42 @@ const fetchData = () => {
 
 export const App = () => {
 
-  const [loadingState, setLoadingState] = useState('loading');
+  const [loadingState, setLoadingState] = useState('default');
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
-  // Hook for handling loading states
   useEffect(() => {
-    if(loadingState === "loading"){
-      fetchData().then(data =>{
-        const {data: tableData} = data;
-        setData(tableData);
-        setLoadingState("default");
+    api.getUsersDiff()
+      .then(result =>{
+        const {data} = result;
+        setData(data);
+        setLoadingState('default');
+      }).catch(error =>{
+        const {error: errorText} =error;
+        setError(errorText);
+        setLoadingState('error');
+      });
+    
+  }, []);
+
+  useEffect(() => {
+    if(loadingState === 'loading'){
+      fetchData().then(result =>{
+        const {data: resultData} = result;
+
+        if(resultData) setData(d => d.concat(resultData));
+
+        setLoadingState('default');
+
       }).catch(error =>{
         const {error: errorText} = error;
         setError(errorText);
-        setLoadingState("error");
+        setLoadingState('error');
       });
     }
-    // return () => {
-    //   cleanup
-    // }
-  },[loadingState]);
+    
+  }, [loadingState])
+
 
   const buttonText = loadingState === "error" ? "Retry" : "Load more";
 
