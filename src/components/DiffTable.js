@@ -58,9 +58,11 @@ const renderRows = (data)=>{
 
 const DiffTable = (props) =>{
     const classes = useStyles();
-    const {data, sortDir} = props;
+    const {data, sortDesc, onSort} = props;
 
-    const sortIcon = sortDir === "asc" 
+    console.log(sortDesc );
+
+    const sortIcon = sortDesc
             ? <ArrowDropDownIcon fontSize="small" /> 
             : <ArrowDropUpIcon fontSize="small" />;
 
@@ -69,7 +71,7 @@ const DiffTable = (props) =>{
             <Table className={classes.Table}>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Date&nbsp;{sortIcon}</TableCell>
+                        <TableCell onClick={onSort}>Date&nbsp;{sortIcon}</TableCell>
                         <TableCell>User ID</TableCell>
                         <TableCell>Old value</TableCell>
                         <TableCell>New value</TableCell>
