@@ -6,6 +6,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import { TableBody, TableCell, TableRow } from '@material-ui/core';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 const useStyles = makeStyles({
     table: {
@@ -28,11 +30,13 @@ const renderDiffRow = (rowData, idx) =>{
 
     const date = moment(timestamp).format("YYYY-MM-DD");
 
+    const {newValue, oldValue} = diff && diff.length ? diff[0] : {};
 
-    const {newValue, oldValue} = diff[0];
+    if(!newValue || !oldValue || !date || !id) return null;
+
 
     return (
-        <TableRow key={idx}>
+        <TableRow data-testid="diff-table-row" key={idx}>
             <TableCell>{date}</TableCell>
             <TableCell>{id}</TableCell>
             <TableCell>{newValue}</TableCell>
@@ -54,14 +58,18 @@ const renderRows = (data)=>{
 
 const DiffTable = (props) =>{
     const classes = useStyles();
-    const {data} = props;
+    const {data, sortDir} = props;
+
+    const sortIcon = sortDir === "asc" 
+            ? <ArrowDropDownIcon fontSize="small" /> 
+            : <ArrowDropUpIcon fontSize="small" />;
 
     return (
         <TableContainer data-testid="diff-table" component={Paper}>
             <Table className={classes.Table}>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Date</TableCell>
+                        <TableCell>Date&nbsp;{sortIcon}</TableCell>
                         <TableCell>User ID</TableCell>
                         <TableCell>Old value</TableCell>
                         <TableCell>New value</TableCell>
