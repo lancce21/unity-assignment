@@ -53,14 +53,12 @@ export const App = () => {
 
   return (
     <Container className="app" fixed>
-      <Box data-testid="app-box" m={2}>
-        <DiffTable data={data} sortDesc={sortDesc} onSort={()=> setSortDesc(!sortDesc)}/>
+      <Box data-testid="app-box" >
+        <DiffTable data={data} sortDesc={sortDesc} onSort={()=> setSortDesc(!sortDesc)} />
         {
           errorAlert
         }
-        {
-          button
-        }
+        <Box display="flex" justifyContent="center">{ button }</Box>
         
       </Box>
     </Container>
