@@ -46,7 +46,7 @@ export const App = () => {
 
   const buttonText = loadingState === "error" ? "Retry" : "Load more";
 
-  const errorAlert = loadingState === "error" && error ? <Alert severity="error">{error}</Alert> : null;
+  const errorAlert = loadingState === "error" && error ? <Alert data-testid="error-alert" severity="error">{error}</Alert> : null;
 
   const button = 
     loadingState === "loading" 
